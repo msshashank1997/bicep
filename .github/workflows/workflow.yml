@@ -1,0 +1,33 @@
+name: GitHub for IT Pro CI/CD Pipeline
+
+env:
+  OUTPUT_PATH: ${{ github.workspace }}
+
+on: [push]
+
+jobs:
+      
+  # Deploy VM in Azure
+  DeployVM:
+    runs-on: windows-latest
+
+    steps:
+    # checkout code from repo
+    - name: checkout repo
+      uses: actions/checkout@v1
+
+    - name: look for ps1 file
+      run: |
+        ls '${{ env.OUTPUT_PATH }}\windows-vms'
+    - name: provision virtual machine in azure
+      env:
+        RESOURCE_GROUP: rg-githubitpro
+        RESOURCE_GROUP_REGION: southcentralus
+        SERVER_NAME: gihtubactions
+        ADMIN_LOGIN: sarah
+      run: >
+        powershell -command "& '${{ env.OUTPUT_PATH }}\windows-vms\deploybicep.ps1'" 
+        -servicePrincipal ${{ secrets.SERVICE_PRINCIPAL_APPID }}
+        -servicePrincipalSecret ${{ secrets.SERVICE_PRINCIPAL_SECRET }} 
+        -servicePrincipalTenantId ${{ secrets.SERVICE_PRINCIPAL_TENANTID }} 
+        -azureSubscriptionName ${{ secrets.AZURE_SUBSCRIPTION_ID }}
