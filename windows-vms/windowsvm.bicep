@@ -64,7 +64,7 @@ resource windowsVMExtensions 'Microsoft.Compute/virtualMachines/extensions@2022-
     autoUpgradeMinorVersion: true
     settings:{
       fileUris:[
-        'https://storage89618.blob.core.windows.net/psscript/psscript.ps1'
+        'https://raw.githubusercontent.com/msshashank1997/Powershell/main/psscript.ps1'
       ]
       commandToExecute: 'powershell.exe -ExecutionPolicy Unrestricted -File psscript.ps1'
     }  
