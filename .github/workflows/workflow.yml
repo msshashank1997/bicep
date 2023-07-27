@@ -31,3 +31,4 @@ jobs:
         -servicePrincipalSecret ${{ secrets.SERVICE_PRINCIPAL_SECRET }} 
         -servicePrincipalTenantId ${{ secrets.SERVICE_PRINCIPAL_TENANTID }} 
         -azureSubscriptionName ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                  
