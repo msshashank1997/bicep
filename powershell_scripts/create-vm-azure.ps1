@@ -1,3 +1,45 @@
+# This IaC script provisions a VM within Azure
+#
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory = $True)]
+    [string]
+    $servicePrincipal,
+
+    [Parameter(Mandatory = $True)]
+    [string]
+    $servicePrincipalSecret,
+
+    [Parameter(Mandatory = $True)]
+    [string]
+    $servicePrincipalTenantId,
+
+    [Parameter(Mandatory = $True)]
+    [string]
+    $azureSubscriptionName,
+
+    [Parameter(Mandatory = $True)]
+    [string]
+    $resourceGroupName,
+
+    [Parameter(Mandatory = $True)]
+    [string]
+    $resourceGroupNameRegion,
+
+    [Parameter(Mandatory = $True)]  
+    [string]
+    $serverName,
+
+    [Parameter(Mandatory = $True)]  
+    [string]
+    $adminLogin,
+
+    [Parameter(Mandatory = $True)]  
+    [String]
+    $adminPassword
+)
+
+
 #region Login
 # This logs into Azure with a Service Principal Account
 #
@@ -13,6 +55,7 @@ Write-Output ""
 
 #region Subscription
 #This sets the subscription the resources will be created in
+
 Write-Output "Setting default azure subscription..."
 az account set `
     --subscription $azureSubscriptionName
@@ -28,7 +71,7 @@ az group create `
     --location $resourceGroupNameRegion
     Write-Output "Done creating resource group"
     Write-Output ""
-#endregion
+ #endregion
 
 #region Create VM
 # Create a VM in the resource group
@@ -37,7 +80,7 @@ try {
     az vm create  `
         --resource-group $resourceGroupName `
         --name $serverName `
-        --image win2016datacenter `
+        --image win2019datacenter `
         --admin-username $adminLogin `
         --admin-password $adminPassword
     }
