@@ -1,0 +1,23 @@
+on: [workflow_dispatch]
+
+name: DeployAzureVM
+
+jobs:
+
+  CreateAzureVM:
+    runs-on: windows-latest
+    
+    steps:
+    # Checkout code from repo
+    - name: checkout repo
+      uses: actions/checkout@v1
+
+    # Run powershell script to create VM
+    - name: RunPowershellScriptFromRepo
+      env: #Set secrets as environment variables
+        SP_CLIENT_ID: ${{ secrets.SERVICE_PRINCIPAL_APPID }}
+        SP_CLIENT_SECRET: ${{ secrets.SERVICE_PRINCIPAL_SECRET }}
+        SP_TENANT_ID: ${{ secrets.SERVICE_PRINCIPAL_TENANTID }}
+        AZURE_SUBSCRIPTION_NAME: ${{ secrets.AZURE_SUBSCRIPTION_NAME }}
+      run: .\powershell_script\create-vm-azure.ps1
+      shell: pwsh
