@@ -12,8 +12,8 @@ az account set `
     --subscription $Env:AZURE_SUBSCRIPTION_NAME
 
 # Create the VM configuration object
-$ResourceGroupName = "my-resource-group"
-$VmName = "Demo-vm-from-gh"
+$ResourceGroupName = "bicep"
+$VmName = "test-123"
 
 # Create a VM in Azure
 Write-Output "Creating VM..."
