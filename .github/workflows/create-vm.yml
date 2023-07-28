@@ -1,23 +1,38 @@
-on: [workflow_dispatch]
+name: GitHub for IT Pro CI/CD Pipeline
 
-name: DeployAzureVM
+env:
+  OUTPUT_PATH: ${{ github.workspace }}
+
+on: [push]
 
 jobs:
-
-  CreateAzureVM:
+      
+  # Deploy VM in Azure
+  DeployVM:
     runs-on: windows-latest
-    
+
     steps:
-    # Checkout code from repo
+    # checkout code from repo
     - name: checkout repo
       uses: actions/checkout@v1
 
-    # Run powershell script to create VM
-    - name: RunPowershellScriptFromRepo
-      env: #Set secrets as environment variables
-        SP_CLIENT_ID: ${{ secrets.SP_CLIENT_ID }}
-        SP_CLIENT_SECRET: ${{ secrets.SP_CLIENT_SECRET }}
-        SP_TENANT_ID: ${{ secrets.SP_TENANT_ID }}
-        AZURE_SUBSCRIPTION_NAME: ${{ secrets.AZURE_SUBSCRIPTION_NAME }}
-      run: ./powershell_scripts/create-vm-azure.ps1
-      shell: pwsh
+    - name: look for ps1 file
+      run: |
+        ls '${{ env.OUTPUT_PATH }}\powershell_scripts'
+    - name: provision virtual machine in azure
+      env:
+        RESOURCE_GROUP: bicep
+        RESOURCE_GROUP_REGION: eastus
+        SERVER_NAME: gihtubactions
+        ADMIN_LOGIN: msshashank1997@gmail.com
+      run: >
+        powershell -command "& '${{ env.OUTPUT_PATH }}\powershell_scripts\create-vm-azure.ps1'" 
+        -servicePrincipal ${{ secrets.SERVICE_PRINCIPAL_APPID }}
+        -servicePrincipalSecret ${{ secrets.SERVICE_PRINCIPAL_SECRET }} 
+        -servicePrincipalTenantId ${{ secrets.SERVICE_PRINCIPAL_TENANTID }} 
+        -azureSubscriptionName ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        -resourceGroupName %RESOURCE_GROUP% 
+        -resourceGroupNameRegion %RESOURCE_GROUP_REGION% 
+        -serverName %SERVER_NAME% 
+        -adminLogin %ADMIN_LOGIN% 
+        -adminPassword ${{ secrets.ADMIN_PASSWORD }} 
