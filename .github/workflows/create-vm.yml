@@ -24,7 +24,7 @@ jobs:
         RESOURCE_GROUP: bicep
         RESOURCE_GROUP_REGION: eastus
         SERVER_NAME: gihtubactions
-        ADMIN_LOGIN: msshashank1997@gmail.com
+        ADMIN_LOGIN: msshashank1997
       run: >
         powershell -command "& '${{ env.OUTPUT_PATH }}\powershell_scripts\create-vm-azure.ps1'" 
         -servicePrincipal ${{ secrets.SERVICE_PRINCIPAL_APPID }}
