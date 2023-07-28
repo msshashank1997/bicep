@@ -19,5 +19,5 @@ jobs:
         SP_CLIENT_SECRET: ${{ secrets.SERVICE_PRINCIPAL_SECRET }}
         SP_TENANT_ID: ${{ secrets.SERVICE_PRINCIPAL_TENANTID }}
         AZURE_SUBSCRIPTION_NAME: ${{ secrets.AZURE_SUBSCRIPTION_NAME }}
-      run: .\powershell_script\create-vm-azure.ps1
+      run: ..\powershell_script\create-vm-azure.ps1
       shell: pwsh
